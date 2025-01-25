@@ -1,0 +1,33 @@
+---
+---
+<script>
+		import { localize, valueAtKeyPath } from '@axhxrx/internationalization';
+		import { translations } from '../translations.ts';
+
+		// Declare the type for the window object extension
+		declare global {
+			interface Window {
+				localizeAllElements: () => void;
+			}
+		}
+
+		// Attach the function to window object
+		window.localizeAllElements = () => {
+			console.log("LOCALIZING ALL ELEMENTS");
+			const elements = document.querySelectorAll('[data-translation]');
+			console.log(elements);
+			for (const element of elements as NodeListOf<HTMLElement>) {
+				console.log(element);
+				const translationKeypath = element.dataset.translation;
+        if (translationKeypath != null) {
+
+          const translation = valueAtKeyPath(translations, translationKeypath) ;
+          element.innerHTML = localize(translation, {locale: document.documentElement.lang});
+        }
+			}
+		}
+		window.addEventListener('load', window.localizeAllElements);
+	</script>
+
+	<button onclick="document.documentElement.lang = 'en'; window.localizeAllElements()">English</button>
+	<button onclick="document.documentElement.lang = 'ja';  window.localizeAllElements()">Japanese</button>

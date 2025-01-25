@@ -1,11 +1,51 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { translations } from '../translations.ts';
+import { localize, keys, interpolate } from '@axhxrx/internationalization';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import * as date from "@axhxrx/date";
+
+import Layout from '../layouts/Layout.astro';
+import AutoLocalize from '../components/AutoLocalize.astro';
+
+const buildDateStamp = date.dateToFormat('YYYY-MM-DD HH:mm:ss');
+console.log("BUILD DATE:", buildDateStamp);
+console.log("TRANSLATIONS:", translations);
+
+const t = keys(translations);
+console.log("ALL KEYS:", t); // 	allKeys.messages.hello
+const username = 'SuperDad420';
+
+
 ---
 
 <Layout>
-	<Welcome />
+	<style>
+		.message {
+			background: lightgoldenrodyellow;
+			border-radius: 4px;
+			padding: 2px;
+			margin: 2px;
+		}
+	</style>
+	<h2>Example of @axhxrx/internationalization</h2>
+	<p>A basic example of how to use <code>@axhxrx/internationalization</code> with Astro.</p>
+
+	<h3>
+		Localized at build time ({buildDateStamp}):
+	</h1>
+	<p>
+		Because this is a build time translation, and Astro is mainly about build-time computation for static sites, we get as-you-type error-checking and auto-completion when using <code>translations</code> when editing this component (<code>index.astro</code>).
+	</p>
+	<p class="message">
+		{localize(translations.messages.hello)}
+	</p>
+
+	<h3>
+		Localized at run time:
+	</h1>
+	<p>The text content below is localized at run time. This can be made to work with a few lines of code (<code>AutoLocalize.astro</code>), but in Astro we don't have the TypeScript context available within the HTML template while editing the component. As a workaround for that, we can use <code>keys(translations)</code> to get a TypeScript object with all the valid key paths (at build time), and then use that object to reference the text content. This way, we still get auto-completion and a degree of error-checking when editing the HTML template.</p>
+	<p class="message" data-translation={t.messages.hello} />
+	<p class="message" data-translation={t.messages.details} />
+	<p class="message" data-translation={t.messages.goodbye} />
+	<AutoLocalize /
 </Layout>

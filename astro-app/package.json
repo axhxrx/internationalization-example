@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@axhxrx/date": "npm:@jsr/axhxrx__date@^0.2.3",
+    "@axhxrx/internationalization": "npm:@jsr/axhxrx__internationalization@^0.0.4",
     "astro": "^5.1.7"
   }
 }
